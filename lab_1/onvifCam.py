@@ -44,6 +44,25 @@ class Camera:
         self.ptz_service.AbsoluteMove(Req)
         sleep(5) # kinda time-consuming operation
 
+    def stop(self):
+        Req = self.ptz_service.create_type('Stop')
+        Req.ProfileToken = self.getGeneralToken()
+        Req.PanTilt = True
+        Req.Zoom = True
+        self.ptz_service.Stop(Req)
+
+    def continuousMove(self, velocityX, velocityY, velocityZ, timeout):
+        pos = self.getPosition()
+        pos.PanTilt.x = velocityX
+        pos.PanTilt.y = velocityY
+        pos.Zoom.x    = velocityZ 
+        Req = self.ptz_service.create_type('AbsoluteMove')
+        Req.Position = pos
+        Req.ProfileToken = self.getGeneralToken()
+        self.ptz_service.AbsoluteMove(Req)
+        sleep(timeout)
+        self.stop()        
+
     def setFocus(self, value):
         print('Set focus to', value)
         imaging = self.cam.create_imaging_service()

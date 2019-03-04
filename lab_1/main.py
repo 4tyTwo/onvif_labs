@@ -58,6 +58,8 @@ def runTest(ip, port, login, password):
     cam.getPosition()
     sleep(5)
     cam.absoluteMove(origin_x, origin_y) # return cam to it's origin
+    sleep(2)
+    cam.continuousMove(0.2, 0.2, 0.1, 10)
 
 user = getCredentials('credentials')
 ip = '192.168.15.42'
@@ -65,5 +67,4 @@ port = 80
 streamPort = 554
 thread = Thread(target=runTest, args=(ip, port, user.login, user.password, ))
 thread.start()
-captureStream('rtsp', user.login, user.password, ip,
-              streamPort, '/Streaming/channels/101')
+captureStream('rtsp', user.login, user.password, ip, streamPort, '/Streaming/channels/101', height=450, width=600)
