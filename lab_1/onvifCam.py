@@ -19,9 +19,11 @@ class Camera:
         # token here can be used for anything
         self.general_token = self.media_profile.token
     
+    def getGeneralToken(self):
+        return self.general_token
 
     def getStatus(self):
-        Req = {'ProfileToken': self.general_token}
+        Req = {'ProfileToken':  self.getGeneralToken()}
         return self.ptz_service.GetStatus(Req)
     
     def getPosition(self):
@@ -38,7 +40,7 @@ class Camera:
         position.PanTilt.y = y
         Req = self.ptz_service.create_type("AbsoluteMove")
         Req.Position = position
-        Req.ProfileToken = self.general_token
+        Req.ProfileToken = self.getGeneralToken()
         self.ptz_service.AbsoluteMove(Req)
         sleep(5) # kinda time-consuming operation
         
