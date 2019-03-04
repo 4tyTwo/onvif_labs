@@ -2,7 +2,6 @@ from onvif import ONVIFCamera
 import zeep
 from time import sleep
 from onvifCam import Camera
-# from camera import Camera
 
 def zeep_pythonvalue(self, xmlvalue):
     return xmlvalue
@@ -19,18 +18,18 @@ class Credentials:
         self.password = password
         
 
-def getCredentials():
-    username = input("Username:")
-    password = input("Password:")
-    return Credentials(username, password)
+def getCredentials(filename):
+    with open(filename, 'r') as f:
+        content = f.readlines()
+    f.close()
+    content = list(map(lambda st: st[ : -1], content))
+    return Credentials(content[0], content[1])
 
-
+user = getCredentials('credentials')
 ip = '192.168.15.42'
 port = 80
-login = "iigortoporkov"
-password = "FP72Ainc6pwRLsrT"
-cam = Camera(ip, port, login, password)
-# cam.getPosition()
-# cam.absoluteMove(-1, -1)
-# cam.getPosition()
+cam = Camera(ip, port, user.login, user.password)
+cam.getPosition()
+cam.absoluteMove(-1, -1)
+cam.getPosition()
 cam.setFocus(1)
