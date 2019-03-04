@@ -27,14 +27,37 @@ def getCredentials(filename):
     content = list(map(lambda st: st[ : -1], content))
     return Credentials(content[0], content[1])
 
+def getQuater(x, y):
+    if (x > 0):
+        if (y > 0):
+            return 1
+        return 2
+    else:
+        if (y > 0):
+            return 4
+        return 3
+
+def getOppositeCorner(x, y):
+    quater = getQuater(x, y)
+    if (quater == 1):
+        return (-1, -1)
+    if (quater == 2):
+        return (-1, 1)
+    if (quater == 4):
+        return (1, -1)
+    return (1, 1)
+
+
 def runTest(ip, port, login, password):
     cam = Camera(ip, port, user.login, user.password)
     pos = cam.getPosition()
-    x = pos.PanTilt.x
-    y = pos.PanTilt.y
-    cam.absoluteMove(-1, -1)
+    origin_x = pos.PanTilt.x
+    origin_y = pos.PanTilt.y
+    dest_pos = getOppositeCorner(origin_x, origin_y)
+    cam.absoluteMove(dest_pos[0], dest_pos[1])
     cam.getPosition()
-    cam.absoluteMove(x, y) # return cam to is's origin
+    sleep(5)
+    cam.absoluteMove(origin_x, origin_y) # return cam to it's origin
 
 user = getCredentials('credentials')
 ip = '192.168.15.42'
