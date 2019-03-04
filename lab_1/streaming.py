@@ -9,7 +9,6 @@ def captureStream(protocol, login, password, ip, port, path, height=320, width=6
     cap = cv2.VideoCapture(url)
     cv2.namedWindow('Room 513', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Room 513', width, height)
-    # cap = cv2.VideoCapture('rtsp://iigortoporkov:FP72Ainc6pwR@192.168.15.42:554/Streaming/channels/101')
     while(True):
         cap.set(3, height)
         cap.set(4, width)

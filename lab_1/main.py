@@ -2,6 +2,8 @@ from onvif import ONVIFCamera
 import zeep
 from time import sleep
 from onvifCam import Camera
+from threading import Thread
+from streaming import captureStream
 
 def zeep_pythonvalue(self, xmlvalue):
     return xmlvalue
@@ -25,11 +27,20 @@ def getCredentials(filename):
     content = list(map(lambda st: st[ : -1], content))
     return Credentials(content[0], content[1])
 
+def runTest(ip, port, login, password):
+    cam = Camera(ip, port, user.login, user.password)
+    pos = cam.getPosition()
+    x = pos.PanTilt.x
+    y = pos.PanTilt.y
+    cam.absoluteMove(-1, -1)
+    cam.getPosition()
+    cam.absoluteMove(x, y) # return cam to is's origin
+
 user = getCredentials('credentials')
 ip = '192.168.15.42'
 port = 80
-cam = Camera(ip, port, user.login, user.password)
-cam.getPosition()
-cam.absoluteMove(-1, -1)
-cam.getPosition()
-cam.setFocus(1)
+streamPort = 554
+thread = Thread(target=runTest, args=(ip, port, user.login, user.password, ))
+thread.start()
+captureStream('rtsp', user.login, user.password, ip,
+              streamPort, '/Streaming/channels/101')

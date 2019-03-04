@@ -26,7 +26,9 @@ class Camera:
     
     def getPosition(self):
         position = self.getStatus().Position
-        print(position)
+        x = position.PanTilt.x
+        y = position.PanTilt.y
+        print('Cam position is: (', x,', ', y, ')', sep='')
         return position
     
     def absoluteMove(self, x, y):
@@ -39,7 +41,6 @@ class Camera:
         Req.ProfileToken = self.general_token
         self.ptz_service.AbsoluteMove(Req)
         sleep(5) # kinda time-consuming operation
-        # x axis rotation seems hella slow
         
     def setFocus(self, value):
         print("Set focus to", value)
