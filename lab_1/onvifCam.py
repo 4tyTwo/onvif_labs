@@ -13,7 +13,7 @@ zeep.xsd.AnySimpleType.pythonvalue = zeep_pythonvalue
 class Camera:
     def __init__(self, ip, port, login, password):
         self.cam = ONVIFCamera(ip, port, login, password)
-        print("Connected to camera ", ip, ":", port, sep="")
+        print('Connected to camera ', ip, ':', port, sep='')
         self.ptz_service = self.cam.create_ptz_service()
         self.media_profile = self.cam.create_media_service().GetProfiles()[0] 
         # token here can be used for anything
@@ -34,20 +34,20 @@ class Camera:
         return position
     
     def absoluteMove(self, x, y):
-        print("Perform absolute move to (", x,"," , y, ")", sep="")
+        print('Perform absolute move to (', x,',' , y, ')', sep='')
         position = self.getPosition()
         position.PanTilt.x = x
         position.PanTilt.y = y
-        Req = self.ptz_service.create_type("AbsoluteMove")
+        Req = self.ptz_service.create_type('AbsoluteMove')
         Req.Position = position
         Req.ProfileToken = self.getGeneralToken()
         self.ptz_service.AbsoluteMove(Req)
         sleep(5) # kinda time-consuming operation
-        
+
     def setFocus(self, value):
-        print("Set focus to", value)
+        print('Set focus to', value)
         imaging = self.cam.create_imaging_service()
-        Req = imaging.create_type("Move")
+        Req = imaging.create_type('Move')
         token = self.media_profile.VideoSourceConfiguration.SourceToken
         print(imaging.GetImagingSettings(token))
         print()

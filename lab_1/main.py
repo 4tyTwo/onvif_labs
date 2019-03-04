@@ -12,8 +12,8 @@ zeep.xsd.AnySimpleType.pythonvalue = zeep_pythonvalue
 
 class Credentials:
 
-    login = ""
-    password = ""
+    login = ''
+    password = ''
 
     def __init__(self, login, password):
         self.login = login
